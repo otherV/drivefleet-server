@@ -1,0 +1,40 @@
+const express = require("express");
+const router = express.Router();
+const Car = require("../models/Car");
+
+router.get("/", async (req, res) => {
+    const cars = await Car.find();
+    res.json(cars);
+});
+
+// single car
+router.get("/:id", async (req, res) => {
+    const car = await Car.findById(
+        req.params.id
+    );
+    res.json(car);
+});
+
+router.post("/", async (req, res) => {
+    const car = new Car(req.body);
+    const result = await car.save();
+    res.json(result);
+});
+
+router.put("/:id", async (req, res) => {
+    const result = await Car.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true } // return the updated document
+    );
+    res.json(result);
+});
+
+router.delete("/:id", async (req, res) => {
+    const result = await Car.findByIdAndDelete(
+        req.params.id
+    );
+    res.json(result);
+});
+
+module.exports = router;
