@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 const carRoutes = require("./routes/cars");
+const bookingRoutes = require("./routes/bookings");
 
 const app = express();
 const PORT = process.env.PORT;
@@ -19,6 +20,7 @@ mongoose.connect(process.env.MONGODB_URI, { dbName: "drivefleet" })
   .catch((err) => console.error("MongoDB connection error ❌:", err));
 
 app.use("/cars", carRoutes);
+app.use("/bookings", bookingRoutes);
 
 app.get("/", (req, res) => {
   res.send("DriveFleet API is running 🚗");
