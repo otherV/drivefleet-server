@@ -3,7 +3,9 @@ const router = express.Router();
 const Car = require("../models/Car");
 
 router.get("/", async (req, res) => {
-    const cars = await Car.find();
+    const { userId } = req.query;
+    const query = userId ? { addedBy: userId } : {};
+    const cars = await Car.find(query).sort({ createdAt: -1 });
     res.json(cars);
 });
 
