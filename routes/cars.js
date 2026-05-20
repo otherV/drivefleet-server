@@ -4,8 +4,23 @@ const Car = require("../models/Car");
 const verifyToken = require("../middleware/verifyToken");
 
 router.get("/", async (req, res) => {
-    const { userId } = req.query;
-    const query = userId ? { addedBy: userId } : {};
+    const { userId, search, type } = req.query;
+
+    const query = {};
+
+    if (userId) {
+        query.addedBy = userId;
+    }
+    if (type) {
+        query.type = type;
+    }
+    if (search) {
+        query.name = {
+            $regex: search,
+            $options: "i"
+        };
+    }
+
     const cars = await Car.find(query).sort({ createdAt: -1 });
     res.json(cars);
 });
