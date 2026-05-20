@@ -27,7 +27,7 @@ router.put("/:id", async (req, res) => {
     const result = await Car.findByIdAndUpdate(
         req.params.id,
         req.body,
-        { new: true } // return the updated document
+        { returnDocument: "after" } // returns the updated document, new option is deprecated
     );
     res.json(result);
 });
