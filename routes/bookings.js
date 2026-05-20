@@ -3,7 +3,9 @@ const router = express.Router();
 const Booking = require("../models/Booking");
 
 router.get("/", async (req, res) => {
-    const bookings = await Booking.find();
+    const { userId } = req.query;
+    const query = userId ? { bookedBy: userId } : {};
+    const bookings = await Booking.find(query).sort({ bookingDate: -1 });
     res.json(bookings);
 });
 
