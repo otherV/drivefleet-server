@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Booking = require("../models/Booking");
+const Car = require("../models/Car");
 const verifyToken = require("../middleware/verifyToken");
 
 router.get("/", verifyToken, async (req, res) => {
@@ -13,6 +14,12 @@ router.get("/", verifyToken, async (req, res) => {
 router.post("/", verifyToken, async (req, res) => {
     const booking = new Booking(req.body);
     const result = await booking.save();
+
+    await Car.findByIdAndUpdate(
+        req.body.carId,
+        { $inc: { bookingCount: 1 } }
+    );
+
     res.json(result);
 });
 
